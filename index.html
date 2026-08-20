@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2 Billion Nafl Rak'ahs</title>
+<style>
+  :root{
+    --bg:#F7F6F2;
+    --card:#FFFFFF;
+    --text:#2C2C2A;
+    --muted:#8B8B85;
+    --accent:#6B8F71;
+    --accent-dark:#557A5C;
+    --accent-light:#E9F1E7;
+    --border:#EAE7DF;
+    --danger:#B5695C;
+    --shadow:0 2px 10px rgba(44,44,42,0.05), 0 1px 2px rgba(44,44,42,0.04);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+    padding:20px 14px 60px;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+
+  /* header */
+  header{text-align:center;margin-bottom:22px;}
+  .eyebrow{
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:6px;font-weight:600;
+  }
+  h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:400;
+    font-size:clamp(28px,7vw,40px);
+    letter-spacing:.01em;
+    margin:0 0 10px;
+    color:var(--accent-dark);
+  }
+  .beads{
+    display:flex;justify-content:center;gap:6px;margin-top:10px;
+  }
+  .beads span{
+    width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.35;
+  }
+  .beads span:nth-child(4n){opacity:.75;}
+
+  /* cards */
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    margin-bottom:16px;
+  }
+  .card h2{
+    font-family:Georgia,serif;font-weight:400;font-size:17px;
+    margin:0 0 14px;color:var(--text);
+  }
+
+  /* stats grid */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .stat{
+    background:var(--accent-light);
+    border-radius:12px;
+    padding:12px 14px;
+  }
+  .stat .n{font-size:19px;font-weight:700;color:var(--accent-dark);letter-spacing:-.01em;}
+  .stat .l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+  .stat.wide{grid-column:1/-1;}
+
+  /* progress bar */
+  .progress-track{
+    width:100%;height:14px;background:var(--accent-light);
+    border-radius:999px;overflow:hidden;margin:14px 0 8px;
+  }
+  .progress-fill{
+    height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));
+    border-radius:999px;transition:width .4s ease;
+    width:0%;
+  }
+  .progress-label{
+    display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);
+  }
+  .progress-pct{font-size:26px;font-weight:700;color:var(--accent-dark);text-align:center;margin-bottom:2px;}
+
+  /* milestones */
+  .milestone-list{display:flex;flex-direction:column;gap:8px;}
+  .milestone{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 10px;border-radius:10px;background:#FBFAF7;
+    border:1px solid var(--border);
+    font-size:13.5px;
+  }
+  .milestone.done{background:var(--accent-light);border-color:transparent;}
+  .m-check{
+    width:20px;height:20px;border-radius:50%;flex:0 0 20px;
+    border:1.5px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;color:transparent;
+  }
+  .milestone.done .m-check{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .m-label{flex:1;font-weight:500;}
+  .m-sub{color:var(--muted);font-size:12px;}
+
+  /* today log */
+  .today-summary{display:flex;gap:14px;margin-bottom:12px;}
+  .today-summary .stat{flex:1;}
+  .today-list{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;}
+  .today-item{
+    display:flex;justify-content:space-between;
+    font-size:13px;padding:7px 10px;background:#FBFAF7;border-radius:8px;
+    border:1px solid var(--border);
+  }
+  .today-item span:last-child{color:var(--muted);}
+  .empty-note{color:var(--muted);font-size:13px;font-style:italic;}
+
+  /* checklist controls */
+  .list-controls{
+    display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;
+  }
+  button{
+    font:inherit;cursor:pointer;border:none;border-radius:10px;
+    padding:10px 14px;font-size:13.5px;font-weight:600;
+    background:var(--accent-light);color:var(--accent-dark);
+    transition:background .15s ease;
+  }
+  button:hover{background:#DCEAD9;}
+  button.primary{background:var(--accent);color:#fff;}
+  button.primary:hover{background:var(--accent-dark);}
+  button.ghost{background:transparent;border:1px solid var(--border);color:var(--text);}
+  button.danger-text{background:transparent;color:var(--danger);font-weight:500;font-size:12px;padding:4px 8px;}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+
+  .jump-row{display:flex;gap:8px;align-items:center;flex:1;min-width:220px;}
+  .jump-row input[type=number]{
+    flex:1;min-width:0;padding:10px 12px;border-radius:10px;
+    border:1px solid var(--border);font-size:14px;background:#FBFAF7;color:var(--text);
+  }
+
+  /* checklist items */
+  .checklist{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .item{
+    display:flex;align-items:flex-start;gap:12px;
+    background:#FBFAF7;border:1px solid var(--border);border-radius:14px;
+    padding:14px;transition:background .2s ease;
+  }
+  .item.checked{background:var(--accent-light);border-color:transparent;}
+  .item.target{outline:2px solid var(--accent);outline-offset:1px;}
+  .box{
+    width:30px;height:30px;flex:0 0 30px;border-radius:9px;
+    border:2px solid #C9C5B8;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;color:transparent;cursor:pointer;margin-top:1px;
+    transition:all .15s ease;
+  }
+  .item.checked .box{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .item-body{flex:1;min-width:0;}
+  .item-title{font-size:15px;font-weight:600;cursor:pointer;}
+  .item-time{font-size:12.5px;color:var(--muted);margin-top:3px;}
+  .item-undo{margin-top:4px;}
+
+  .pager{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-size:12.5px;color:var(--muted);
+  }
+  .pager .pageinfo{flex:1;text-align:center;}
+
+  .backup-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .storage-note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;}
+  input[type=file]{display:none;}
+
+  footer{text-align:center;font-size:12px;color:var(--muted);margin-top:26px;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Personal Ibadah Tracker</div>
+    <h1>2 BILLION NAFL RAK'AHS</h1>
+    <div class="beads" id="beads"></div>
+  </header>
+
+  <section class="card">
+    <div class="progress-pct" id="progressPct">0%</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label">
+      <span id="rakahsCompletedLabel">0 rak'ahs</span>
+      <span id="rakahsTargetLabel">2,000,000,000 rak'ahs</span>
+    </div>
+    <div class="stats" style="margin-top:16px;">
+      <div class="stat"><div class="n" id="statCompletedSets">0</div><div class="l">Completed sets</div></div>
+      <div class="stat"><div class="n" id="statRemainingSets">0</div><div class="l">Remaining sets</div></div>
+      <div class="stat"><div class="n" id="statCompletedRakahs">0</div><div class="l">Completed rak'ahs</div></div>
+      <div class="stat"><div class="n" id="statRemainingRakahs">0</div><div class="l">Remaining rak'ahs</div></div>
+      <div class="stat wide"><div class="n">1,000,000,000</div><div class="l">Target sets of 2 rak'ahs</div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Milestones</h2>
+    <div class="milestone-list" id="milestoneList"></div>
+  </section>
+
+  <section class="card">
+    <h2>Today</h2>
+    <div class="today-summary">
+      <div class="stat"><div class="n" id="todaySets">0</div><div class="l">Sets today</div></div>
+      <div class="stat"><div class="n" id="todayRakahs">0</div><div class="l">Rak'ahs today</div></div>
+    </div>
+    <div class="today-list" id="todayList"></div>
+  </section>
+
+  <section class="card">
+    <h2>Checklist</h2>
+    <div class="list-controls">
+      <button class="primary" id="continueBtn">Continue →</button>
+      <div class="jump-row">
+        <input type="number" id="jumpInput" min="1" max="1000000000" placeholder="Go to set #">
+        <button class="ghost" id="jumpBtn">Go</button>
+      </div>
+    </div>
+    <div class="checklist" id="checklist"></div>
+    <div class="pager">
+      <button class="ghost" id="prevPageBtn">‹ Prev</button>
+      <span class="pageinfo" id="pageInfo">Page 1</span>
+      <button class="ghost" id="nextPageBtn">Next ›</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Backup &amp; Restore</h2>
+    <div class="backup-actions">
+      <button id="backupBtn">Backup Progress (JSON)</button>
+      <button class="ghost" id="restoreBtn">Restore Progress</button>
+      <input type="file" id="restoreFile" accept="application/json">
+    </div>
+    <div class="storage-note" id="storageNote"></div>
+  </section>
+
+  <footer>Saved automatically on this device. Back up often.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TOTAL_SETS = 1000000000;
+  var RAKAHS_TARGET = 2000000000;
+  var PAGE_SIZE = 50;
+  var STORAGE_KEY = "naflTracker2B";
+
+  var MILESTONES = [
+    {t:100, label:"100 sets"},
+    {t:1000, label:"1,000 sets"},
+    {t:10000, label:"10,000 sets"},
+    {t:100000, label:"100,000 sets"},
+    {t:1000000, label:"1 million sets"},
+    {t:10000000, label:"10 million sets"},
+    {t:100000000, label:"100 million sets"},
+    {t:1000000000, label:"1 billion sets"}
+  ];
+
+  var state = null;
+  var currentPage = 1;
+
+  function defaultState(){
+    return { completions:{}, completedCount:0, nextIndex:1 };
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      if(!parsed || typeof parsed !== "object" || !parsed.completions) return defaultState();
+      if(typeof parsed.completedCount !== "number") parsed.completedCount = Object.keys(parsed.completions).length;
+      if(typeof parsed.nextIndex !== "number") parsed.nextIndex = 1;
+      return parsed;
+    }catch(e){
+      return defaultState();
+    }
+  }
+
+  function saveState(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }catch(e){
+      alert("Could not save progress — your browser storage may be full. Please back up your progress as a JSON file now.");
+    }
+    updateStorageNote();
+  }
+
+  function advanceNextIndex(){
+    while(state.completions[state.nextIndex] && state.nextIndex <= TOTAL_SETS){
+      state.nextIndex++;
+    }
+  }
+
+  function formatTimestamp(iso){
+    var d = new Date(iso);
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    var day = d.getDate();
+    var month = months[d.getMonth()];
+    var year = d.getFullYear();
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var ampm = h >= 12 ? "PM" : "AM";
+    var h12 = h % 12; if(h12 === 0) h12 = 12;
+    var mStr = m < 10 ? "0"+m : ""+m;
+    return day + " " + month + " " + year + " • " + h12 + ":" + mStr + " " + ampm;
+  }
+
+  function formatTimeOnly(iso){
+    var d = new Date(iso);
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var ampm = h >= 12 ? "PM" : "AM";
+    var h12 = h % 12; if(h12 === 0) h12 = 12;
+    var mStr = m < 10 ? "0"+m : ""+m;
+    return h12 + ":" + mStr + " " + ampm;
+  }
+
+  function isToday(iso){
+    var d = new Date(iso);
+    var now = new Date();
+    return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth() && d.getDate()===now.getDate();
+  }
+
+  function checkSet(index){
+    if(state.completions[index]) return;
+    var iso = new Date().toISOString();
+    state.completions[index] = iso;
+    state.completedCount++;
+    advanceNextIndex();
+    saveState();
+    renderAll();
+  }
+
+  function undoSet(index){
+    if(!state.completions[index]) return;
+    var ok = confirm("Remove completion for set #" + index.toLocaleString() + "? This will delete its saved timestamp.");
+    if(!ok) return;
+    delete state.completions[index];
+    state.completedCount = Math.max(0, state.completedCount - 1);
+    if(index < state.nextIndex) state.nextIndex = index;
+    saveState();
+    renderAll();
+  }
+
+  function goToPage(p){
+    var totalPages = Math.ceil(TOTAL_SETS / PAGE_SIZE);
+    if(p < 1) p = 1;
+    if(p > totalPages) p = totalPages;
+    currentPage = p;
+    renderChecklist();
+  }
+
+  function pageForIndex(i){
+    return Math.ceil(i / PAGE_SIZE);
+  }
+
+  function renderStats(){
+    var completedSets = state.completedCount;
+    var remainingSets = TOTAL_SETS - completedSets;
+    var completedRakahs = completedSets * 2;
+    var remainingRakahs = RAKAHS_TARGET - completedRakahs;
+    var pct = (completedRakahs / RAKAHS_TARGET) * 100;
+
+    document.getElementById("statCompletedSets").textContent = completedSets.toLocaleString();
+    document.getElementById("statRemainingSets").textContent = remainingSets.toLocaleString();
+    document.getElementById("statCompletedRakahs").textContent = completedRakahs.toLocaleString();
+    document.getElementById("statRemainingRakahs").textContent = remainingRakahs.toLocaleString();
+
+    var pctDisplay;
+    if(pct === 0){ pctDisplay = "0%"; }
+    else if(pct < 0.0001){ pctDisplay = pct.toFixed(7) + "%"; }
+    else if(pct < 1){ pctDisplay = pct.toFixed(4) + "%"; }
+    else { pctDisplay = pct.toFixed(2) + "%"; }
+
+    document.getElementById("progressPct").textContent = pctDisplay;
+    document.getElementById("progressFill").style.width = Math.min(100, pct) + "%";
+    document.getElementById("rakahsCompletedLabel").textContent = completedRakahs.toLocaleString() + " rak'ahs";
+    document.getElementById("rakahsTargetLabel").textContent = RAKAHS_TARGET.toLocaleString() + " rak'ahs";
+  }
+
+  function renderMilestones(){
+    var completedSets = state.completedCount;
+    var wrap = document.getElementById("milestoneList");
+    wrap.innerHTML = "";
+    MILESTONES.forEach(function(m){
+      var done = completedSets >= m.t;
+      var el = document.createElement("div");
+      el.className = "milestone" + (done ? " done" : "");
+      var sub;
+      if(done){
+        sub = "Reached";
+      } else {
+        var pct = (completedSets / m.t) * 100;
+        sub = pct < 0.01 ? "< 0.01%" : pct.toFixed(pct < 1 ? 3 : 1) + "%";
+      }
+      el.innerHTML =
+        '<div class="m-check">' + (done ? "✓" : "") + '</div>' +
+        '<div class="m-label">' + m.label + '</div>' +
+        '<div class="m-sub">' + sub + '</div>';
+      wrap.appendChild(el);
+    });
+  }
+
+  function renderToday(){
+    var entries = [];
+    for(var key in state.completions){
+      if(Object.prototype.hasOwnProperty.call(state.completions, key)){
+        var iso = state.completions[key];
+        if(isToday(iso)){
+          entries.push({ index: parseInt(key,10), iso: iso });
+        }
+      }
+    }
+    entries.sort(function(a,b){ return new Date(a.iso) - new Date(b.iso); });
+
+    document.getElementById("todaySets").textContent = entries.length.toLocaleString();
+    document.getElementById("todayRakahs").textContent = (entries.length * 2).toLocaleString();
+
+    var list = document.getElementById("todayList");
+    list.innerHTML = "";
+    if(entries.length === 0){
+      var empty = document.createElement("div");
+      empty.className = "empty-note";
+      empty.textContent = "No sets completed yet today.";
+      list.appendChild(empty);
+      return;
+    }
+    entries.forEach(function(e){
+      var row = document.createElement("div");
+      row.className = "today-item";
+      row.innerHTML = "<span>2 rak'ahs — #" + e.index.toLocaleString() + "</span><span>" + formatTimeOnly(e.iso) + "</span>";
+      list.appendChild(row);
+    });
+  }
+
+  function renderChecklist(){
+    var start = (currentPage - 1) * PAGE_SIZE + 1;
+    var end = Math.min(start + PAGE_SIZE - 1, TOTAL_SETS);
+    var wrap = document.getElementById("checklist");
+    wrap.innerHTML = "";
+
+    for(var i = start; i <= end; i++){
+      var iso = state.completions[i];
+      var checked = !!iso;
+      var item = document.createElement("div");
+      item.className = "item" + (checked ? " checked" : "") + (i === state.nextIndex ? " target" : "");
+      item.id = "set-" + i;
+
+      var box = document.createElement("div");
+      box.className = "box";
+      box.textContent = checked ? "✓" : "";
+      box.addEventListener("click", (function(idx, isChecked){
+        return function(){ if(!isChecked) checkSet(idx); };
+      })(i, checked));
+
+      var body = document.createElement("div");
+      body.className = "item-body";
+
+      var title = document.createElement("div");
+      title.className = "item-title";
+      title.textContent = "2 Rak'ahs — #" + i.toLocaleString();
+      title.addEventListener("click", (function(idx, isChecked){
+        return function(){ if(!isChecked) checkSet(idx); };
+      })(i, checked));
+      body.appendChild(title);
+
+      if(checked){
+        var time = document.createElement("div");
+        time.className = "item-time";
+        time.textContent = formatTimestamp(iso);
+        body.appendChild(time);
+
+        var undoWrap = document.createElement("div");
+        undoWrap.className = "item-undo";
+        var undoBtn = document.createElement("button");
+        undoBtn.className = "danger-text";
+        undoBtn.textContent = "Undo";
+        undoBtn.addEventListener("click", (function(idx){
+          return function(){ undoSet(idx); };
+        })(i));
+        undoWrap.appendChild(undoBtn);
+        body.appendChild(undoWrap);
+      }
+
+      item.appendChild(box);
+      item.appendChild(body);
+      wrap.appendChild(item);
+    }
+
+    var totalPages = Math.ceil(TOTAL_SETS / PAGE_SIZE);
+    document.getElementById("pageInfo").textContent =
+      "Page " + currentPage.toLocaleString() + " of " + totalPages.toLocaleString() +
+      " (sets " + start.toLocaleString() + "–" + end.toLocaleString() + ")";
+    document.getElementById("prevPageBtn").disabled = currentPage <= 1;
+    document.getElementById("nextPageBtn").disabled = currentPage >= totalPages;
+  }
+
+  function updateStorageNote(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY) || "";
+      var bytes = new Blob([raw]).size;
+      var kb = (bytes / 1024).toFixed(1);
+      var note = document.getElementById("storageNote");
+      var msg = "Local storage used: ~" + kb + " KB. ";
+      if(bytes > 3500000){
+        msg += "You're approaching your browser's storage limit — please back up now, as new completions may stop saving.";
+      } else {
+        msg += "Your device has a storage limit (a few MB), so back up regularly to keep your full history safe.";
+      }
+      note.textContent = msg;
+    }catch(e){}
+  }
+
+  function renderBeads(){
+    var beads = document.getElementById("beads");
+    beads.innerHTML = "";
+    for(var i=0;i<12;i++){
+      var s = document.createElement("span");
+      beads.appendChild(s);
+    }
+  }
+
+  function renderAll(){
+    renderStats();
+    renderMilestones();
+    renderToday();
+    renderChecklist();
+  }
+
+  function backupProgress(){
+    var payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      totalSets: TOTAL_SETS,
+      rakahsTarget: RAKAHS_TARGET,
+      completedCount: state.completedCount,
+      nextIndex: state.nextIndex,
+      completions: state.completions
+    };
+    var blob = new Blob([JSON.stringify(payload)], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    var stamp = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = "nafl-2billion-backup-" + stamp + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function restoreProgress(file){
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var data = JSON.parse(reader.result);
+        if(!data || typeof data !== "object" || typeof data.completions !== "object"){
+          alert("This file doesn't look like a valid backup.");
+          return;
+        }
+        var ok = confirm("Restoring will replace your current progress on this device with the backup file. Continue?");
+        if(!ok) return;
+        state = {
+          completions: data.completions,
+          completedCount: typeof data.completedCount === "number" ? data.completedCount : Object.keys(data.completions).length,
+          nextIndex: typeof data.nextIndex === "number" ? data.nextIndex : 1
+        };
+        advanceNextIndex();
+        saveState();
+        currentPage = pageForIndex(state.nextIndex);
+        renderAll();
+        alert("Progress restored.");
+      }catch(e){
+        alert("Could not read that file — please make sure it's a JSON backup exported from this tracker.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // wire up events
+  document.getElementById("continueBtn").addEventListener("click", function(){
+    var p = pageForIndex(state.nextIndex);
+    goToPage(p);
+    setTimeout(function(){
+      var el = document.getElementById("set-" + state.nextIndex);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"center"});
+    }, 30);
+  });
+
+  document.getElementById("jumpBtn").addEventListener("click", function(){
+    var val = parseInt(document.getElementById("jumpInput").value, 10);
+    if(!val || val < 1 || val > TOTAL_SETS){
+      alert("Enter a set number between 1 and " + TOTAL_SETS.toLocaleString() + ".");
+      return;
+    }
+    goToPage(pageForIndex(val));
+    setTimeout(function(){
+      var el = document.getElementById("set-" + val);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"center"});
+    }, 30);
+  });
+
+  document.getElementById("prevPageBtn").addEventListener("click", function(){ goToPage(currentPage - 1); window.scrollTo({top:0,behavior:"smooth"}); });
+  document.getElementById("nextPageBtn").addEventListener("click", function(){ goToPage(currentPage + 1); window.scrollTo({top:0,behavior:"smooth"}); });
+
+  document.getElementById("backupBtn").addEventListener("click", backupProgress);
+  document.getElementById("restoreBtn").addEventListener("click", function(){
+    document.getElementById("restoreFile").click();
+  });
+  document.getElementById("restoreFile").addEventListener("change", function(e){
+    if(e.target.files && e.target.files[0]){
+      restoreProgress(e.target.files[0]);
+      e.target.value = "";
+    }
+  });
+
+  // init
+  state = loadState();
+  advanceNextIndex();
+  currentPage = pageForIndex(state.nextIndex);
+  renderBeads();
+  renderAll();
+  updateStorageNote();
+
+})();
+</script>
+</body>
+</html>
