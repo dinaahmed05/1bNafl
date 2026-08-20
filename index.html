@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2 Billion Nafl Rak'ahs</title>
+<title>1 Billion Nafl Rak'ahs</title>
 <style>
   :root{
     --bg:#F7F6F2;
@@ -190,7 +190,7 @@
 
   <header>
     <div class="eyebrow">Personal Ibadah Tracker</div>
-    <h1>2 BILLION NAFL RAK'AHS</h1>
+    <h1>1 BILLION NAFL RAK'AHS</h1>
     <div class="beads" id="beads"></div>
   </header>
 
@@ -199,14 +199,14 @@
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-label">
       <span id="rakahsCompletedLabel">0 rak'ahs</span>
-      <span id="rakahsTargetLabel">2,000,000,000 rak'ahs</span>
+      <span id="rakahsTargetLabel">1,000,000,000 rak'ahs</span>
     </div>
     <div class="stats" style="margin-top:16px;">
       <div class="stat"><div class="n" id="statCompletedSets">0</div><div class="l">Completed sets</div></div>
       <div class="stat"><div class="n" id="statRemainingSets">0</div><div class="l">Remaining sets</div></div>
       <div class="stat"><div class="n" id="statCompletedRakahs">0</div><div class="l">Completed rak'ahs</div></div>
       <div class="stat"><div class="n" id="statRemainingRakahs">0</div><div class="l">Remaining rak'ahs</div></div>
-      <div class="stat wide"><div class="n">1,000,000,000</div><div class="l">Target sets of 2 rak'ahs</div></div>
+      <div class="stat wide"><div class="n">500,000,000</div><div class="l">Target sets of 2 rak'ahs</div></div>
     </div>
   </section>
 
@@ -229,7 +229,7 @@
     <div class="list-controls">
       <button class="primary" id="continueBtn">Continue →</button>
       <div class="jump-row">
-        <input type="number" id="jumpInput" min="1" max="1000000000" placeholder="Go to set #">
+        <input type="number" id="jumpInput" min="1" max="500000000" placeholder="Go to set #">
         <button class="ghost" id="jumpBtn">Go</button>
       </div>
     </div>
@@ -258,8 +258,8 @@
 (function(){
   "use strict";
 
-  var TOTAL_SETS = 1000000000;
-  var RAKAHS_TARGET = 2000000000;
+  var TOTAL_SETS = 500000000;
+  var RAKAHS_TARGET = 1000000000;
   var PAGE_SIZE = 50;
   var STORAGE_KEY = "naflTracker2B";
 
@@ -271,7 +271,7 @@
     {t:1000000, label:"1 million sets"},
     {t:10000000, label:"10 million sets"},
     {t:100000000, label:"100 million sets"},
-    {t:1000000000, label:"1 billion sets"}
+    {t:500000000, label:"500 million sets"}
   ];
 
   var state = null;
@@ -561,7 +561,7 @@
     var a = document.createElement("a");
     var stamp = new Date().toISOString().slice(0,10);
     a.href = url;
-    a.download = "nafl-2billion-backup-" + stamp + ".json";
+    a.download = "nafl-1billion-backup-" + stamp + ".json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
